@@ -13,7 +13,7 @@
 
 <meta name="date" content="2020-12-10" />
 
-<title>Introduction</title>
+<title>feature-transformation</title>
 
 <script src="site_libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -400,7 +400,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Introduction</h1>
+<h1 class="title toc-ignore">feature-transformation</h1>
 <h4 class="author">ogorodriguez</h4>
 <h4 class="date">2020-12-10</h4>
 
@@ -561,7 +561,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/introduction.Rmd</code>) and HTML (<code>docs/introduction.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/feature-transformation.Rmd</code>) and HTML (<code>docs/feature-transformation.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -587,27 +587,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/01_nested-machine-learning-workflows/804a86356f03abddb230c3e844203fcab78f936a/docs/introduction.html" target="_blank">804a863</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2020-12-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/blob/685c927d642bd5d3f6f3dfdfbbccfa5d9803a36d/analysis/introduction.Rmd" target="_blank">685c927</a>
+<a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/blob/075024f90cf479c4a8d4a00e88a82756fc4f8544/analysis/feature-transformation.Rmd" target="_blank">075024f</a>
 </td>
 <td>
 ogorodriguez
@@ -616,41 +599,7 @@ ogorodriguez
 2020-12-10
 </td>
 <td>
-Changed echo to TRUE to show code
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/ogorodriguez/01_nested-machine-learning-workflows/e9e5b03ad950e2a4af4b5fb7ac3f7553cb78e086/docs/introduction.html" target="_blank">e9e5b03</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2020-12-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/blob/6650a142595c9abe91490f96de44889e5409f16b/analysis/introduction.Rmd" target="_blank">6650a14</a>
-</td>
-<td>
-ogorodriguez
-</td>
-<td>
-2020-12-10
-</td>
-<td>
-Created Intro and Tidy Data sections and updated Index
+Create Feature transformation page and update index
 </td>
 </tr>
 </tbody>
@@ -677,20 +626,45 @@ pacman::p_load(tidyverse,
                caret,
                janitor,
                dplyr)</code></pre>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>This notebook will review the nested workflow used by Jared Wilber <a href="https://www.jwilber.me/nest">in his website</a>.</p>
-<p>The main objective is to use the data frame as the object to hold all elements of the data analysis.<br />
-That is, besides data, the data frame will also hold parameters, and other objects as well that will help carry all elements together and avoid repetition.</p>
-<p>This is important for me since I believe that having everything at close range and already tidy for work I believe will help improve my workflow and make me more efficient in my learning and analysis.</p>
-<p>Some reasons why this approach may facillitate the analysis:</p>
-<ul>
-<li>It provides an easy mental model to work with data</li>
-<li>All related objects are stored together</li>
-<li>Reduces clutter</li>
-<li>There is consistency in the data arrangement and will help in further analysis</li>
-</ul>
-<p>For this analysis, the McDonalds US Nutrition facts menu data set will be used to do some basic machine learning workflow analysis. <a href="https://www.kaggle.com/mcdonalds/nutrition-facts">It can be found in Kaggle here.</a></p>
+<div id="feature-transformation" class="section level2">
+<h2>Feature Transformation</h2>
+<p>In this section we will use the <code>purrr</code> package that has functions for recursive operations, iteration, and the like.</p>
+<p>Here, we will do a feature transformation, which means, we will alter the value of the variables (columns) by applying a function to each of them.</p>
+<p>This is sometimes useful when trying to analyse data that is heavily skewed in trying to have a more normal distribution for ease of analysis. In this case we will just simply apply a function to all the variable columns and save them in our nested data frame to see how we can preserve the integrity of the data all within one single object (the nested df)</p>
+<p>A function will be created that will obtain the power of all numerical values in our nested data frame.</p>
+<p>Since we have for copies of our data frame now, we will create a function that will apply four different powers, one to each of our nested df’s. This will be applicable to all numeric variables (aka features) of our dataframe.</p>
+<pre class="r"><code># function to apply a given power (power-transformation) to numerical (dbl) columns in our dataframe
+power_transf &lt;- function(dframe, power) {
+  dframe %&gt;% 
+    mutate_if(~ is.numeric(.x),
+              ~ `^`(.x, power)) %&gt;% 
+    select(-item, -category)
+}</code></pre>
+<p>The <code>purrr</code> package has the <code>map</code> tool that will be the power horse of the iteration. It will go over every data frame in our nested object and will get the power of each column to the value that we assign to the variable power.</p>
+<p>To keep track of the power applied we will create a new list-column data frame with two new columns:</p>
+<p><em>power</em>: to know which power was applied for the transformation <strong>tms_data</strong>: which is the new data frame with the power transformation applied.</p>
+<p>Our nested list-column set <code>menu_nest</code> will have a new column called power. We will need to use the <code>map2</code> function So it applies to both the new power column and the data column of the original <code>menu_nest</code> df.<br />
+A new column called label will be added as well.</p>
+<pre class="r"><code># add 3 columns to menu_nest: power, transf_data, and label
+menu_nest &lt;- read_rds(&quot;data/menu_nest.rds&quot;)
+menu_transf &lt;- menu_nest %&gt;% 
+  mutate(
+    power = c(0.5, 1, 2, 3),
+    transf_data = purrr::map2(data, power, ~ power_transf(.x, .y)),
+    label = purrr::map(data, &quot;category&quot;)
+  )
+
+menu_transf</code></pre>
+<pre><code># A tibble: 4 x 5
+  index data                power transf_data         label      
+  &lt;int&gt; &lt;list&gt;              &lt;dbl&gt; &lt;list&gt;              &lt;list&gt;     
+1     1 &lt;tibble [260 × 23]&gt;   0.5 &lt;tibble [260 × 21]&gt; &lt;chr [260]&gt;
+2     2 &lt;tibble [260 × 23]&gt;   1   &lt;tibble [260 × 21]&gt; &lt;chr [260]&gt;
+3     3 &lt;tibble [260 × 23]&gt;   2   &lt;tibble [260 × 21]&gt; &lt;chr [260]&gt;
+4     4 &lt;tibble [260 × 23]&gt;   3   &lt;tibble [260 × 21]&gt; &lt;chr [260]&gt;</code></pre>
+<p>The new <code>menu_transf</code> data frame holds our original list-column data frame, the transformed ones from each power associated, a column that tells us which power is being applied and also a column that indicates the category of the food being analysed.</p>
+<p>This was just a simple example. The same type of workflow is required when applying maching learning algorithms to our nested dataframe.</p>
+<p>In the next section, instead of using a user-defined function, we will use the functions in caret. caret is a package for machine learning algorithms.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -722,32 +696,32 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] nlme_3.1-149         fs_1.5.0             httr_1.4.2          
  [4] rprojroot_2.0.2      SnowballC_0.7.0      tools_4.0.3         
- [7] backports_1.2.0      R6_2.5.0             rpart_4.1-15        
-[10] DBI_1.1.0            colorspace_2.0-0     nnet_7.3-14         
-[13] withr_2.3.0          tidyselect_1.1.0     compiler_4.0.3      
-[16] git2r_0.27.1         cli_2.2.0            rvest_0.3.6         
-[19] pacman_0.5.1         xml2_1.3.2           scales_1.1.1        
-[22] digest_0.6.27        rmarkdown_2.5        pkgconfig_2.0.3     
-[25] htmltools_0.5.0      dbplyr_2.0.0         rlang_0.4.9         
-[28] readxl_1.3.1.9000    rstudioapi_0.13      generics_0.1.0      
-[31] jsonlite_1.7.1       ModelMetrics_1.2.2.2 tokenizers_0.2.1    
-[34] magrittr_2.0.1       Matrix_1.2-18        Rcpp_1.0.5          
-[37] munsell_0.5.0        fansi_0.4.1          lifecycle_0.2.0     
-[40] pROC_1.16.2          stringi_1.5.3        whisker_0.4         
-[43] yaml_2.2.1           snakecase_0.11.0     MASS_7.3-53         
-[46] plyr_1.8.6           recipes_0.1.15       grid_4.0.3          
-[49] promises_1.1.1       crayon_1.3.4         haven_2.3.1         
-[52] splines_4.0.3        hms_0.5.3            knitr_1.30          
-[55] pillar_1.4.7         stats4_4.0.3         reshape2_1.4.4      
-[58] codetools_0.2-16     reprex_0.3.0         glue_1.4.2          
-[61] evaluate_0.14        data.table_1.13.4    modelr_0.1.8        
-[64] vctrs_0.3.5          httpuv_1.5.4         foreach_1.5.1       
-[67] cellranger_1.1.0     gtable_0.3.0         assertthat_0.2.1    
-[70] xfun_0.19            gower_0.2.2          prodlim_2019.11.13  
-[73] broom_0.7.2          janeaustenr_0.1.5    later_1.1.0.1       
-[76] class_7.3-17         survival_3.2-7       timeDate_3043.102   
-[79] iterators_1.0.13     lava_1.6.8.1         ellipsis_0.3.1      
-[82] ipred_0.9-9         </code></pre>
+ [7] backports_1.2.0      utf8_1.1.4           R6_2.5.0            
+[10] rpart_4.1-15         DBI_1.1.0            colorspace_2.0-0    
+[13] nnet_7.3-14          withr_2.3.0          tidyselect_1.1.0    
+[16] compiler_4.0.3       git2r_0.27.1         cli_2.2.0           
+[19] rvest_0.3.6          pacman_0.5.1         xml2_1.3.2          
+[22] scales_1.1.1         digest_0.6.27        rmarkdown_2.5       
+[25] pkgconfig_2.0.3      htmltools_0.5.0      dbplyr_2.0.0        
+[28] rlang_0.4.9          readxl_1.3.1.9000    rstudioapi_0.13     
+[31] generics_0.1.0       jsonlite_1.7.1       ModelMetrics_1.2.2.2
+[34] tokenizers_0.2.1     magrittr_2.0.1       Matrix_1.2-18       
+[37] Rcpp_1.0.5           munsell_0.5.0        fansi_0.4.1         
+[40] lifecycle_0.2.0      pROC_1.16.2          stringi_1.5.3       
+[43] whisker_0.4          yaml_2.2.1           snakecase_0.11.0    
+[46] MASS_7.3-53          plyr_1.8.6           recipes_0.1.15      
+[49] grid_4.0.3           promises_1.1.1       crayon_1.3.4        
+[52] haven_2.3.1          splines_4.0.3        hms_0.5.3           
+[55] knitr_1.30           pillar_1.4.7         stats4_4.0.3        
+[58] reshape2_1.4.4       codetools_0.2-16     reprex_0.3.0        
+[61] glue_1.4.2           evaluate_0.14        data.table_1.13.4   
+[64] modelr_0.1.8         vctrs_0.3.5          httpuv_1.5.4        
+[67] foreach_1.5.1        cellranger_1.1.0     gtable_0.3.0        
+[70] assertthat_0.2.1     xfun_0.19            gower_0.2.2         
+[73] prodlim_2019.11.13   broom_0.7.2          janeaustenr_0.1.5   
+[76] later_1.1.0.1        class_7.3-17         survival_3.2-7      
+[79] timeDate_3043.102    iterators_1.0.13     lava_1.6.8.1        
+[82] ellipsis_0.3.1       ipred_0.9-9         </code></pre>
 </div>
 </div>
 
