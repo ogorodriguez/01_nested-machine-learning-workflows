@@ -1,0 +1,169 @@
+---
+title: "feature-transformation"
+author: "ogorodriguez"
+date: "2020-12-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r}
+# Setting global options
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "data/images",
+                      fig.width = 12,
+                      fig.height = 8)
+```
+
+```{r}
+# Installing packages
+pacman::p_load(tidyverse,
+               here,
+               lubridate,
+               tidytext,
+               tidyr,
+               caret,
+               janitor,
+               dplyr)
+```
+
+## Feature Transformation
+
+In this section we will use the `purrr` package that has functions for recursive operations, iteration, and the like.
+
+Here, we will do a feature transformation, which means, we will alter the value of the variables (columns)
+by applying a function to each of them.
+
+This is sometimes useful when trying to analyse data that is heavily skewed in trying to have a more normal distribution
+for ease of analysis.  In this case we will just simply apply a function to all the variable columns and save them in our 
+nested data frame to see how we can preserve the integrity of the data all within one single object (the nested df)
+
+A function will be created that will obtain the power of all numerical values in our nested data frame.
+
+Since we have for copies of our data frame now, we will create a function that will apply four different 
+powers, one to each of our nested df's. This will be applicable to all numeric variables (aka features) of our dataframe. 
+
+```{r}
+# function to apply a given power (power-transformation) to numerical (dbl) columns in our dataframe
+power_transf <- function(dframe, power) {
+  dframe %>% 
+    mutate_if(~ is.numeric(.x),
+              ~ `^`(.x, power)) %>% 
+    select(-item, -category)
+}
+
+```
+
+The `purrr` package has the `map` tool that will be the power horse of the iteration.
+It will go over every data frame in our nested object and will get the power of each column
+to the value that we assign to the variable power.
+
+To keep track of the power applied we will create a new list-column data frame with two
+new columns:
+
+  _power_: to know which power was applied for the transformation
+  **tms_data**: which is the new data frame with the power transformation applied.
+  
+Our nested list-column set `menu_nest` will have a new column called power.  We will need to use the `map2` function
+So it applies to both the new power column and the data column of the original `menu_nest` df.  
+A new column called label will be added as well.
+
+```{r}
+# add 3 columns to menu_nest: power, transf_data, and label
+menu_nest <- read_rds("data/menu_nest.rds")
+menu_transf <- menu_nest %>% 
+  mutate(
+    power = c(0.5, 1, 2, 3),
+    transf_data = purrr::map2(data, power, ~ power_transf(.x, .y)),
+    label = purrr::map(data, "category")
+  )
+
+menu_transf
+
+```
+
+The new `menu_transf` data frame holds our original list-column data frame, the transformed ones 
+from each power associated, a column that tells us which power is being applied and also
+a column that indicates the category of the food being analysed.
+
+This was just a simple example.  The same type of workflow is required when applying
+maching learning algorithms to our nested dataframe.
+
+In the next section, instead of using a user-defined function, we will use the functions in caret.
+caret is a package for machine learning algorithms.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

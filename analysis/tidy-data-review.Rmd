@@ -78,6 +78,12 @@ menu_nest <- rep(list(menu), 4) %>%
 menu_nest
 ```
 
+We will need to save the menu_nest and menu data frames for used later
+
+```{r}
+write_rds(menu, "data/menu.rds")
+write_rds(menu_nest, "data/menu_nest.rds")
+```
 
 
 

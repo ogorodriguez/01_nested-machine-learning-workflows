@@ -21,7 +21,7 @@ The post is divided in the following sections:
 
   a. [Introduction](introduction.html)
   b. [Tidy data review](tidy-data-review.html)
-  c. Feature transformation
+  c. [Feature transformation](feature-transformation.html)
   d. Machine learning
   e. Putting together feature transformation and machine learning
   f. Results
