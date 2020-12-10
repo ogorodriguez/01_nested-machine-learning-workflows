@@ -1,0 +1,130 @@
+---
+title: "Tidy Data Review"
+author: "ogorodriguez"
+date: "2020-12-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r}
+# Setting global options
+knitr::opts_chunk$set(echo = FALSE,
+                      eval = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "data/images",
+                      fig.width = 12,
+                      fig.height = 8)
+```
+
+```{r}
+# Installing packages
+pacman::p_load(tidyverse,
+               here,
+               lubridate,
+               tidytext,
+               tidyr,
+               caret,
+               janitor,
+               dplyr)
+```
+
+## Review of Tidy Data
+
+A quick recap of what tiday data is.  Tidy data aims to present data in a way that 
+every observation is located in one row and all variables are located in each in one column.
+Each observation must be hosted in a single cell.
+
+This is a very rectangular data approach to analysis and modeling.  It helps in consistency.
+To arrive to such structure, a good knowledge of the data to analyse as well as its normalisation 
+is required.
+
+This provides an intuitive mental model for analysis.  
+
+The data set to use to practice the nested approach workflow for analysis and modeling is the 
+McDonalds Nutrition facts menu.  The objective is to see if we can predict the items category:
+_Breakfast, Desserts, Snacks & Sides_,etc from its nutritional context
+
+### Loading the data
+
+I have already downloaded a copy of the set from Kaggle that I will incorporate to this notebook.
+
+```{r}
+# Loading data from data folder.  We will remove non-nutritional content.  
+# I will keep the Item to know which product falls unde that category
+library(dplyr)
+menu <- read_csv("data/raw/menu.csv") %>% 
+  clean_names() %>% 
+  select(- serving_size)
+
+menu %>% glimpse()
+
+```
+
+Our menu data frame has 260 observations and 23 variables.  
+
+In this notebook, four transformations will be done to the data frame, so we will create four versions
+of the menu data set that will be all collected within one single data frame.  
+
+For that we will use nesting functions that will help create list columns.  List columns help us host other objects
+in a data frame.  We will create index columns to identify each copy of our data frame.
+
+```{r}
+# nest original data frame and make four copies
+menu_nest <- rep(list(menu), 4) %>% 
+  enframe(name = "index", value = "data")
+
+menu_nest
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

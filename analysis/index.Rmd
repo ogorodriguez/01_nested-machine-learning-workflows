@@ -14,12 +14,12 @@ In this occasion I will practice the **Nested Machine Learning Workflows** using
 and  other packages like purrr or tidy packages.  An approach to keep all related things together in one place; in this
 time in one single data frame for ease of analysis.
 
-This is taken from the website of [Jason Wilber](https://www.jwilber.me), [from this section](https://www.jwilber.me/nest).  
+This is taken from the website of [Jared Wilber](https://www.jwilber.me), [from this section](https://www.jwilber.me/nest).  
 Once again a big hat to Jeremy Singer-Vine and his Data is Plural newsletter.
 
 The post is divided in the following sections:
 
-  a. Introduction
+  a. [Introduction](introduction.html)
   b. Tidy data review
   c. Feature transformation
   d. Machine learning

@@ -1,0 +1,88 @@
+---
+title: "Introduction"
+author: "ogorodriguez"
+date: "2020-12-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r}
+# Setting global options
+knitr::opts_chunk$set(echo = FALSE,
+                      eval = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "data/images",
+                      fig.width = 12,
+                      fig.height = 8)
+```
+
+```{r}
+# Installing packages
+pacman::p_load(tidyverse,
+               here,
+               lubridate,
+               tidytext,
+               tidyr,
+               caret,
+               janitor,
+               dplyr)
+```
+
+
+## Introduction
+
+This notebook will review the nested workflow used by Jared Wilber [in his website](https://www.jwilber.me/nest).  
+
+The main objective is to use the data frame as the object to hold all elements of the data analysis.  
+That is, besides data, the data frame will also hold parameters, and other objects as well that will help carry 
+all elements together and avoid repetition.  
+
+This is important for me since I believe that having everything at close range and already tidy for
+work I believe will help improve my workflow and make me more efficient in my learning and analysis.
+
+Some reasons why this approach may facillitate the analysis:
+
+  * It provides an easy mental model to work with data
+  * All related objects are stored together
+  * Reduces clutter
+  * There is consistency in the data arrangement and will help in further analysis
+  
+For this analysis, the McDonalds US Nutrition facts menu data set will be used to do some basic
+machine learning workflow analysis.  [It can be found in Kaggle here.](https://www.kaggle.com/mcdonalds/nutrition-facts)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+```
+
