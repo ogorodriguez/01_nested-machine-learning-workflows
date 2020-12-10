@@ -20,7 +20,7 @@ Once again a big hat to Jeremy Singer-Vine and his Data is Plural newsletter.
 The post is divided in the following sections:
 
   a. [Introduction](introduction.html)
-  b. Tidy data review
+  b. [Tidy data review](tidy-data-review.html)
   c. Feature transformation
   d. Machine learning
   e. Putting together feature transformation and machine learning
