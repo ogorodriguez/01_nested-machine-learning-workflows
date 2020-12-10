@@ -518,16 +518,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez01nestedmachinelearningworkflowstree6650a142595c9abe91490f96de44889e5409f16btargetblank6650a14a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/tree/6650a142595c9abe91490f96de44889e5409f16b" target="_blank">6650a14</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez01nestedmachinelearningworkflowstree685c927d642bd5d3f6f3dfdfbbccfa5d9803a36dtargetblank685c927a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/tree/685c927d642bd5d3f6f3dfdfbbccfa5d9803a36d" target="_blank">685c927</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez01nestedmachinelearningworkflowstree6650a142595c9abe91490f96de44889e5409f16btargetblank6650a14a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomogorodriguez01nestedmachinelearningworkflowstree685c927d642bd5d3f6f3dfdfbbccfa5d9803a36dtargetblank685c927a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/tree/6650a142595c9abe91490f96de44889e5409f16b" target="_blank">6650a14</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/tree/685c927d642bd5d3f6f3dfdfbbccfa5d9803a36d" target="_blank">685c927</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -585,6 +585,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/blob/685c927d642bd5d3f6f3dfdfbbccfa5d9803a36d/analysis/tidy-data-review.Rmd" target="_blank">685c927</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-12-10
+</td>
+<td>
+Changed echo to TRUE to show code
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ogorodriguez/01_nested-machine-learning-workflows/e9e5b03ad950e2a4af4b5fb7ac3f7553cb78e086/docs/tidy-data-review.html" target="_blank">e9e5b03</a>
+</td>
+<td>
+ogorodriguez
+</td>
+<td>
+2020-12-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/ogorodriguez/01_nested-machine-learning-workflows/blob/6650a142595c9abe91490f96de44889e5409f16b/analysis/tidy-data-review.Rmd" target="_blank">6650a14</a>
 </td>
 <td>
@@ -605,13 +639,22 @@ Created Intro and Tidy Data sections and updated Index
 </div>
 </div>
 <pre class="r"><code># Setting global options
-knitr::opts_chunk$set(echo = FALSE,
+knitr::opts_chunk$set(echo = TRUE,
                       eval = TRUE,
                       message = FALSE,
                       warning = FALSE,
                       fig.path = &quot;data/images&quot;,
                       fig.width = 12,
                       fig.height = 8)</code></pre>
+<pre class="r"><code># Installing packages
+pacman::p_load(tidyverse,
+               here,
+               lubridate,
+               tidytext,
+               tidyr,
+               caret,
+               janitor,
+               dplyr)</code></pre>
 <div id="review-of-tidy-data" class="section level2">
 <h2>Review of Tidy Data</h2>
 <p>A quick recap of what tiday data is. Tidy data aims to present data in a way that every observation is located in one row and all variables are located in each in one column. Each observation must be hosted in a single cell.</p>
@@ -621,6 +664,14 @@ knitr::opts_chunk$set(echo = FALSE,
 <div id="loading-the-data" class="section level3">
 <h3>Loading the data</h3>
 <p>I have already downloaded a copy of the set from Kaggle that I will incorporate to this notebook.</p>
+<pre class="r"><code># Loading data from data folder.  We will remove non-nutritional content.  
+# I will keep the Item to know which product falls unde that category
+library(dplyr)
+menu &lt;- read_csv(&quot;data/raw/menu.csv&quot;) %&gt;% 
+  clean_names() %&gt;% 
+  select(- serving_size)
+
+menu %&gt;% glimpse()</code></pre>
 <pre><code>Rows: 260
 Columns: 23
 $ category                          &lt;chr&gt; &quot;Breakfast&quot;, &quot;Breakfast&quot;, &quot;Breakfas…
@@ -649,6 +700,11 @@ $ iron_percent_daily_value          &lt;dbl&gt; 15, 8, 10, 15, 10, 20, 15, 20, 1
 <p>Our menu data frame has 260 observations and 23 variables.</p>
 <p>In this notebook, four transformations will be done to the data frame, so we will create four versions of the menu data set that will be all collected within one single data frame.</p>
 <p>For that we will use nesting functions that will help create list columns. List columns help us host other objects in a data frame. We will create index columns to identify each copy of our data frame.</p>
+<pre class="r"><code># nest original data frame and make four copies
+menu_nest &lt;- rep(list(menu), 4) %&gt;% 
+  enframe(name = &quot;index&quot;, value = &quot;data&quot;)
+
+menu_nest</code></pre>
 <pre><code># A tibble: 4 x 2
   index data               
   &lt;int&gt; &lt;list&gt;             
@@ -663,6 +719,7 @@ $ iron_percent_daily_value          &lt;dbl&gt; 15, 8, 10, 15, 10, 20, 15, 20, 1
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.3 (2020-10-10)
 Platform: x86_64-apple-darwin17.0 (64-bit)
 Running under: macOS Catalina 10.15.7
