@@ -1,0 +1,99 @@
+---
+title: "feature-transformation"
+author: "ogorodriguez"
+date: "2020-12-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r}
+# Setting global options
+knitr::opts_chunk$set(echo = TRUE,
+                      eval = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.path = "data/images",
+                      fig.width = 12,
+                      fig.height = 8)
+```
+
+```{r}
+# Installing packages
+pacman::p_load(tidyverse,
+               here,
+               lubridate,
+               tidytext,
+               tidyr,
+               caret,
+               janitor,
+               dplyr)
+```
+
+## Machine Learning Algorithms
+
+We will create a list column of all the machine learning algorithms we are going to apply to our for transformed (normalized) data sets for each of their transformations or powers used.
+
+The caret package has different algorithm implementations within a consistent API.  We will create a machine learning function factory.
+
+```{r}
+# maching learning model function factory
+ml_fun_fact <- function(ml_method) {
+  function(data, label) {
+    caret::train(
+      x = data,
+      y = label,
+      method = ml_method
+    )
+  }
+}
+
+```
+
+## Creating the data frame for our algorithm
+
+Now we will create the data frame that will host all of our functions.
+
+
+  
+```{r}
+model_df <- list(
+  decision_tree = ml_fun_fact("rpart2"),
+  random_forest = ml_fun_fact("ranger"),
+  boosted_log_reg = ml_fun_fact('LogitBoost'),
+  knn = ml_fun_fact('knn'),
+  svm = ml_fun_fact('svmLinear3'),
+  lda = ml_fun_fact('lda')
+  ) %>% 
+  enframe(name = "model", value = "model_func")
+
+model_df
+```
+  
+
+```{r}
+write_rds(model_df, "data/model_df.rds")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

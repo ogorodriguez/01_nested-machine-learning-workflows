@@ -58,6 +58,9 @@ power_transf <- function(dframe, power) {
 
 ```
 
+## 
+
+
 The `purrr` package has the `map` tool that will be the power horse of the iteration.
 It will go over every data frame in our nested object and will get the power of each column
 to the value that we assign to the variable power.
@@ -66,7 +69,7 @@ To keep track of the power applied we will create a new list-column data frame w
 new columns:
 
   _power_: to know which power was applied for the transformation
-  **tms_data**: which is the new data frame with the power transformation applied.
+  *tms_data*: which is the new data frame with the power transformation applied.
   
 Our nested list-column set `menu_nest` will have a new column called power.  We will need to use the `map2` function
 So it applies to both the new power column and the data column of the original `menu_nest` df.  
@@ -95,6 +98,11 @@ maching learning algorithms to our nested dataframe.
 
 In the next section, instead of using a user-defined function, we will use the functions in caret.
 caret is a package for machine learning algorithms.
+
+```{r}
+write_rds(menu_transf, "data/menu_transf.rds")
+```
+
 
 
 
